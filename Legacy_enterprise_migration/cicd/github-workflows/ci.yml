@@ -1,0 +1,133 @@
+# Continuous integration for the Migration Studio.
+# GitHub only runs workflows from <repo root>/.github/workflows, so copy this file there:
+#   bash Legacy_enterprise_migration/cicd/scripts/install-workflows.sh
+name: ci
+
+on:
+  push:
+    branches: [main, "pranav/**"]
+    paths: ["Legacy_enterprise_migration/**"]
+  pull_request:
+    paths: ["Legacy_enterprise_migration/**"]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  APP_DIR: Legacy_enterprise_migration
+  CARDDEMO_COMMIT: 59cc6c2
+
+jobs:
+  # 1. The proof: Java ports must match the golden output the real COBOL produced.
+  parity:
+    name: Java parity vs COBOL golden output
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: Legacy_enterprise_migration } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "21", cache: maven }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Build and run JUnit parity tests
+        run: mvn -B -q -f migrated/carddemo-batch/pom.xml package
+      - name: Verify every scenario against the COBOL golden output
+        run: python verifier/check_all.py | tee verify.txt
+      - name: Mutation check (27 deliberate bugs must all be caught)
+        run: python verifier/mutation_check.py | tee mutation.txt
+      - name: Job summary
+        if: always()
+        run: |
+          {
+            echo "### Verifier"; echo '```'; cat verify.txt; echo '```'
+            echo "### Mutation check"; echo '```'; tail -n 5 mutation.txt; echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: verifier-output, path: "Legacy_enterprise_migration/*.txt" }
+
+  # 2. The offline pipeline: generate -> build -> verify -> repair, with the scripted mock provider (no API key).
+  pipeline-mock:
+    name: Migration loop (mock provider)
+    runs-on: ubuntu-latest
+    needs: parity
+    defaults: { run: { working-directory: Legacy_enterprise_migration } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "21", cache: maven }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Fetch CardDemo COBOL source (Apache-2.0)
+        run: |
+          git clone --quiet https://github.com/aws-samples/aws-mainframe-modernization-carddemo "$RUNNER_TEMP/carddemo"
+          git -C "$RUNNER_TEMP/carddemo" checkout --quiet "$CARDDEMO_COMMIT"
+      - run: pip install -r pipeline/requirements.txt
+      - name: Run the loop for both programs
+        env: { SRC: "${{ runner.temp }}/carddemo/app" }
+        run: |
+          python pipeline/migrate.py --program posttran --provider mock
+          python pipeline/migrate.py --program intcalc  --provider mock
+
+  # 3. The API.
+  server:
+    name: Server (ruff + pytest)
+    runs-on: ubuntu-latest
+    needs: parity
+    defaults: { run: { working-directory: Legacy_enterprise_migration/server } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "21", cache: maven }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: Legacy_enterprise_migration/server/requirements.txt }
+      - run: pip install -r requirements.txt
+      - run: ruff check .
+      - name: Build the jar and fetch the CardDemo source so the live pipeline tests run
+        run: |
+          mvn -B -q -DskipTests -f ../migrated/carddemo-batch/pom.xml package
+          git clone --quiet https://github.com/aws-samples/aws-mainframe-modernization-carddemo "$RUNNER_TEMP/carddemo"
+          git -C "$RUNNER_TEMP/carddemo" checkout --quiet "$CARDDEMO_COMMIT"
+      - name: pytest (auth, RBAC, admin, board, human gates, live verify and migrate)
+        env: { SRC: "${{ runner.temp }}/carddemo/app" }
+        run: pytest -q
+
+  # 4. The UI.
+  client:
+    name: Client (typecheck, test, build)
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: Legacy_enterprise_migration/client } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22", cache: npm, cache-dependency-path: Legacy_enterprise_migration/client/package-lock.json }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with: { name: client-dist, path: Legacy_enterprise_migration/client/dist }
+
+  # 5. The container images build (no push on PRs).
+  images:
+    name: Docker images build
+    runs-on: ubuntu-latest
+    needs: [server, client]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: Legacy_enterprise_migration
+          file: Legacy_enterprise_migration/cicd/docker/Dockerfile.server
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - uses: docker/build-push-action@v6
+        with:
+          context: Legacy_enterprise_migration
+          file: Legacy_enterprise_migration/cicd/docker/Dockerfile.client
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

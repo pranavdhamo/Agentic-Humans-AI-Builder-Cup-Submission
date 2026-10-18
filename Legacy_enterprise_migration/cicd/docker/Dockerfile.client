@@ -1,0 +1,15 @@
+# Build context: Legacy_enterprise_migration/
+FROM node:22-alpine AS build
+WORKDIR /client
+COPY client/package.json client/package-lock.json ./
+RUN npm ci
+COPY client ./
+RUN npm run build
+
+FROM nginx:1.27-alpine
+# API_UPSTREAM is the server origin (e.g. http://server:8000 or the Cloud Run URL).
+ARG API_UPSTREAM=http://server:8000
+ENV API_UPSTREAM=${API_UPSTREAM}
+COPY cicd/docker/nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY --from=build /client/dist /usr/share/nginx/html
+EXPOSE 8080

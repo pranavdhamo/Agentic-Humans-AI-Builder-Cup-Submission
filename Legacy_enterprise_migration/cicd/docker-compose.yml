@@ -1,0 +1,29 @@
+# Whole studio in two containers:  docker compose -f cicd/docker-compose.yml up --build
+# UI on http://localhost:8080, API docs on http://localhost:8000/docs
+# Sign in with the seeded demo accounts (see BOOTUP.md) and add the Gemini key under Admin > AI Providers.
+# Optional env key instead:  GEMINI_API_KEY=... docker compose -f cicd/docker-compose.yml up --build
+services:
+  server:
+    build:
+      context: ..
+      dockerfile: cicd/docker/Dockerfile.server
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      STUDIO_ADMIN_PASSWORD: ${STUDIO_ADMIN_PASSWORD:-admin123}
+      STUDIO_DEMO_PASSWORD: ${STUDIO_DEMO_PASSWORD:-studio123}
+      STUDIO_SECRET: ${STUDIO_SECRET:-}
+    volumes:
+      - studio-data:/app/server/data      # users, projects, encrypted provider key, audit log
+    ports: ["8000:8000"]
+
+  client:
+    build:
+      context: ..
+      dockerfile: cicd/docker/Dockerfile.client
+      args:
+        API_UPSTREAM: http://server:8000
+    depends_on: [server]
+    ports: ["8080:8080"]
+
+volumes:
+  studio-data:

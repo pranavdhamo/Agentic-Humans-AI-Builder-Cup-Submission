@@ -1,0 +1,31 @@
+# Build context: Legacy_enterprise_migration/
+# The API shells out to Maven, Java and the Python verifier/pipeline, so the image carries all three.
+FROM eclipse-temurin:21-jdk
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends python3 python3-venv python3-pip maven git curl \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY server/requirements.txt server/requirements.txt
+RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir -r server/requirements.txt
+ENV PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
+
+# Pre-fetch Maven dependencies so the first verify job is fast, then keep the built jar.
+COPY migrated migrated
+RUN mvn -B -q -DskipTests -f migrated/carddemo-batch/pom.xml package
+
+COPY oracle oracle
+COPY verifier verifier
+COPY pipeline pipeline
+COPY server server
+
+# CardDemo COBOL source (Apache-2.0) is only needed for migrations; fetched at the pinned commit.
+RUN git clone --quiet https://github.com/aws-samples/aws-mainframe-modernization-carddemo /data/carddemo \
+ && git -C /data/carddemo checkout --quiet 59cc6c2
+ENV SRC=/data/carddemo/app STUDIO_CORS_ORIGINS="*"
+
+WORKDIR /app/server
+EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=5s CMD curl -fsS http://localhost:8000/api/health || exit 1
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

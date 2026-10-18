@@ -1,0 +1,33 @@
+# Cloud Build equivalent of the CI gate, for teams that stay inside GCP:
+#   gcloud builds submit --config Legacy_enterprise_migration/cicd/cloudbuild.yaml Legacy_enterprise_migration
+steps:
+  - id: parity
+    name: maven:3.9-eclipse-temurin-21
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        apt-get update -qq && apt-get install -y -qq python3 >/dev/null
+        mvn -B -q -f migrated/carddemo-batch/pom.xml package
+        python3 verifier/check_all.py
+
+  - id: server-image
+    name: gcr.io/cloud-builders/docker
+    args: [build, -f, cicd/docker/Dockerfile.server, -t, "${_REGISTRY}/studio-server:${SHORT_SHA}", .]
+    waitFor: [parity]
+
+  - id: client-image
+    name: gcr.io/cloud-builders/docker
+    args: [build, -f, cicd/docker/Dockerfile.client, -t, "${_REGISTRY}/studio-client:${SHORT_SHA}", .]
+    waitFor: [parity]
+
+substitutions:
+  _REGISTRY: us-central1-docker.pkg.dev/PROJECT_ID/studio
+
+images:
+  - "${_REGISTRY}/studio-server:${SHORT_SHA}"
+  - "${_REGISTRY}/studio-client:${SHORT_SHA}"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: 1800s

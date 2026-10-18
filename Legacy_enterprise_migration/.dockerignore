@@ -1,0 +1,10 @@
+server/.venv
+server/.pytest_cache
+server/.ruff_cache
+client/node_modules
+client/dist
+migrated/**/target
+pipeline/runs
+pipeline/.venv
+**/__pycache__
+.git
