@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --ink-950: 244 247 251; --ink-900: 255 255 255; --ink-800: 238 242 248; --ink-700: 225 232 243; --ink-600: 203 213 230;
+  --s100: 15 23 42; --s200: 30 41 59; --s300: 51 65 85; --s400: 71 85 105; --s500: 100 116 139; --s600: 148 163 184; --s700: 203 213 225;
+  --fg: 15 23 42; --brand: 37 99 235; --brand-soft: 29 78 216; --ok: 5 150 105; --warn: 180 83 9; --bad: 220 38 38;
+}
+:root.dark {
+  color-scheme: dark;
+  --ink-950: 7 11 20; --ink-900: 11 18 32; --ink-800: 16 26 46; --ink-700: 24 36 61; --ink-600: 36 51 82;
+  --s100: 241 245 249; --s200: 226 232 240; --s300: 203 213 225; --s400: 148 163 184; --s500: 100 116 139; --s600: 71 85 105; --s700: 51 65 85;
+  --fg: 255 255 255; --brand: 66 133 244; --brand-soft: 138 180 248; --ok: 52 211 153; --warn: 251 191 36; --bad: 248 113 113;
+}
+
+html, body, #root { height: 100%; }
+body {
+  @apply bg-ink-950 text-slate-300 antialiased font-sans;
+  background-image: radial-gradient(1200px 500px at 70% -10%, rgb(var(--brand) / 0.10), transparent 60%);
+}
+
+@layer components {
+  .card { @apply rounded-xl border border-ink-600/70 bg-ink-900/80 shadow-lg shadow-black/10; }
+  .card-h { @apply flex items-center justify-between gap-3 border-b border-ink-600/60 px-4 py-3; }
+  .card-t { @apply text-[11px] font-semibold uppercase tracking-widest text-slate-400; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg border border-ink-600 bg-ink-800 px-3.5 py-2 text-sm font-medium text-slate-200 transition hover:border-brand hover:text-fg disabled:cursor-not-allowed disabled:opacity-40; }
+  .btn-primary { @apply border-transparent bg-brand text-white shadow-glow hover:opacity-90 hover:text-white; }
+  .btn-danger { @apply border-bad/40 text-bad hover:border-bad hover:text-bad; }
+  .input { @apply w-full rounded-lg border border-ink-600 bg-ink-800 px-3 py-2 text-sm text-slate-200 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20; }
+  .label { @apply mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-slate-500; }
+  .chip { @apply inline-flex items-center rounded-full border border-ink-600 bg-ink-800 px-2.5 py-1 text-xs font-medium text-slate-300 transition hover:border-brand hover:text-fg; }
+  .nav { @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition hover:bg-ink-800 hover:text-slate-100; }
+  .nav-on { @apply bg-brand/10 text-brand-soft hover:bg-brand/10 hover:text-brand-soft; }
+}
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb { background: rgb(var(--ink-600)); border-radius: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+@keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
+.indeterminate::after { content: ""; display: block; height: 100%; width: 40%; border-radius: 9999px; background: rgb(var(--brand)); animation: slide 1.2s ease-in-out infinite; }
+
+/* React Flow follows the theme variables */
+.react-flow__controls { box-shadow: none; border: 1px solid rgb(var(--ink-600)); border-radius: 8px; overflow: hidden; }
+.react-flow__controls-button { background: rgb(var(--ink-900)); border-bottom: 1px solid rgb(var(--ink-600)); fill: rgb(var(--s300)); color: rgb(var(--s300)); }
+.react-flow__controls-button:hover { background: rgb(var(--ink-800)); }
+.react-flow__minimap { background: rgb(var(--ink-900)); border: 1px solid rgb(var(--ink-600)); border-radius: 8px; }
+.react-flow__edge.selected .react-flow__edge-path { stroke: rgb(var(--brand)) !important; }
+.react-flow__handle { opacity: 0.55; }
+.react-flow__node:hover .react-flow__handle, .react-flow__node.selected .react-flow__handle { opacity: 1; }
