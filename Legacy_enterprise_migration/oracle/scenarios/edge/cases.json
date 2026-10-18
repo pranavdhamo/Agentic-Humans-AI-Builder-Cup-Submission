@@ -1,0 +1,490 @@
+{
+ "9000000000008882": {
+  "label": "amount makes balance EXACTLY equal the credit limit -> accepted",
+  "category": "limit-boundary"
+ },
+ "9000000000006066": {
+  "label": "balance one cent OVER the limit -> reject 102",
+  "category": "limit-boundary"
+ },
+ "9000000000003960": {
+  "label": "balance one cent UNDER the limit -> accepted",
+  "category": "limit-boundary"
+ },
+ "9000000000001056": {
+  "label": "transaction dated exactly on expiry date -> accepted",
+  "category": "expiry-boundary"
+ },
+ "9000000000003210": {
+  "label": "transaction one day after expiry -> reject 103",
+  "category": "expiry-boundary"
+ },
+ "9000000000006368": {
+  "label": "over limit AND expired -> 103 overwrites 102",
+  "category": "rule-priority"
+ },
+ "9000000000004325": {
+  "label": "sequence 1/3: leaves exactly 100.00 of headroom -> accepted",
+  "category": "sequential-state"
+ },
+ "9000000000000376": {
+  "label": "sequence 2/3: uses the last 100.00 -> accepted (balance == limit)",
+  "category": "sequential-state"
+ },
+ "9000000000007457": {
+  "label": "sequence 3/3: one cent more -> reject 102 (needs balance from rows 1-2)",
+  "category": "sequential-state"
+ },
+ "9000000000009809": {
+  "label": "card number not in cross-reference -> reject 100",
+  "category": "unknown-card"
+ },
+ "9000000000006347": {
+  "label": "blank card number -> reject 100",
+  "category": "unknown-card"
+ },
+ "9000000000004636": {
+  "label": "card differing from a real one in last digit -> reject 100",
+  "category": "unknown-card"
+ },
+ "9000000000009093": {
+  "label": "zero amount counts as credit",
+  "category": "sign-handling"
+ },
+ "9000000000003417": {
+  "label": "negative cent (payment)",
+  "category": "sign-handling"
+ },
+ "9000000000006724": {
+  "label": "large payment",
+  "category": "sign-handling"
+ },
+ "9000000000008822": {
+  "label": "purchase after payment",
+  "category": "sign-handling"
+ },
+ "9000000000007935": {
+  "label": "overpunch digit +0",
+  "category": "overpunch"
+ },
+ "9000000000006039": {
+  "label": "overpunch digit -0",
+  "category": "overpunch"
+ },
+ "9000000000004517": {
+  "label": "overpunch digit +1",
+  "category": "overpunch"
+ },
+ "9000000000008621": {
+  "label": "overpunch digit -1",
+  "category": "overpunch"
+ },
+ "9000000000005151": {
+  "label": "overpunch digit +2",
+  "category": "overpunch"
+ },
+ "9000000000002558": {
+  "label": "overpunch digit -2",
+  "category": "overpunch"
+ },
+ "9000000000000291": {
+  "label": "overpunch digit +3",
+  "category": "overpunch"
+ },
+ "9000000000002802": {
+  "label": "overpunch digit -3",
+  "category": "overpunch"
+ },
+ "9000000000002207": {
+  "label": "overpunch digit +4",
+  "category": "overpunch"
+ },
+ "9000000000007138": {
+  "label": "overpunch digit -4",
+  "category": "overpunch"
+ },
+ "9000000000001849": {
+  "label": "overpunch digit +5",
+  "category": "overpunch"
+ },
+ "9000000000006863": {
+  "label": "overpunch digit -5",
+  "category": "overpunch"
+ },
+ "9000000000003545": {
+  "label": "overpunch digit +6",
+  "category": "overpunch"
+ },
+ "9000000000003291": {
+  "label": "overpunch digit -6",
+  "category": "overpunch"
+ },
+ "9000000000006840": {
+  "label": "overpunch digit +7",
+  "category": "overpunch"
+ },
+ "9000000000009458": {
+  "label": "overpunch digit -7",
+  "category": "overpunch"
+ },
+ "9000000000000505": {
+  "label": "overpunch digit +8",
+  "category": "overpunch"
+ },
+ "9000000000004282": {
+  "label": "overpunch digit -8",
+  "category": "overpunch"
+ },
+ "9000000000000329": {
+  "label": "overpunch digit +9",
+  "category": "overpunch"
+ },
+ "9000000000004375": {
+  "label": "overpunch digit -9",
+  "category": "overpunch"
+ },
+ "9000000000000443": {
+  "label": "seed credit so next row overflows 9 digits",
+  "category": "overflow"
+ },
+ "9000000000002446": {
+  "label": "999,999,999.99 purchase: temp balance wraps past 9 digits",
+  "category": "overflow"
+ },
+ "9000000000001048": {
+  "label": "max negative amount",
+  "category": "overflow"
+ },
+ "9000000000005342": {
+  "label": "max negative amount again",
+  "category": "overflow"
+ },
+ "9000000000008256": {
+  "label": "category (01,9) create",
+  "category": "category-balance"
+ },
+ "9000000000009643": {
+  "label": "category (05,7) create",
+  "category": "category-balance"
+ },
+ "9000000000009685": {
+  "label": "category (01,9) create",
+  "category": "category-balance"
+ },
+ "9000000000007134": {
+  "label": "category (07,1) create",
+  "category": "category-balance"
+ },
+ "9000000000004807": {
+  "label": "category (05,7) create",
+  "category": "category-balance"
+ },
+ "9000000000002623": {
+  "label": "category (02,9999) create",
+  "category": "category-balance"
+ },
+ "9000000000006908": {
+  "label": "latin-1 and punctuation in free text",
+  "category": "text-fidelity"
+ },
+ "9000000000000706": {
+  "label": "fields filled to full width",
+  "category": "text-fidelity"
+ },
+ "9000000000000080": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009842": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000006514": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000000778": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000003633": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000001717": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000004239": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000004945": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000000204": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000001882": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000005516": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000008310": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000007702": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000004000": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009995": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000005931": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000001470": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000006979": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009128": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000002379": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000006986": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000003826": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000008147": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009840": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000001570": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000006014": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000009889": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000006180": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000001428": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000009759": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000009129": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000006797": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000000947": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000001060": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009760": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000003001": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000004917": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000003856": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000003345": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009956": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000000790": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000000457": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009343": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000005444": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000000825": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000004620": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000004630": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000002455": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000009682": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009491": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000008457": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000005578": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000008199": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000002370": {
+  "label": "mixed traffic: stale",
+  "category": "mixed-traffic"
+ },
+ "9000000000007754": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000008358": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009542": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000000265": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000001389": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000007869": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000003886": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000000448": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000001643": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000008805": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000002304": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000001573": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000002399": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000009696": {
+  "label": "mixed traffic: payment",
+  "category": "mixed-traffic"
+ },
+ "9000000000005731": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000006484": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000001669": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000003453": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ },
+ "9000000000007714": {
+  "label": "mixed traffic: huge",
+  "category": "mixed-traffic"
+ },
+ "9000000000006664": {
+  "label": "mixed traffic: purchase",
+  "category": "mixed-traffic"
+ }
+}

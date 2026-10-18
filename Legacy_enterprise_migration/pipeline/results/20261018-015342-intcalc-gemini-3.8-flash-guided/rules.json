@@ -1,0 +1,11 @@
+[
+ "0000-TCATBALF-OPEN through 0400-TRANFILE-OPEN: Open input files TCATBALF, XREFFILE, DISCGRP, I-O file ACCOUNT-FILE, and output file TRANFILE, abending with code 16 if any file cannot be opened.",
+ "1000-TCATBALF-GET-NEXT: Read transaction category balances sequentially until EOF, displaying each 50-byte record and maintaining record counter.",
+ "PROCEDURE DIVISION / 1050-UPDATE-ACCOUNT: On account break after the first account, update the previous account by adding WS-TOTAL-INT to ACCT-CURR-BAL and clearing current cycle credit and debit to zero.",
+ "PROCEDURE DIVISION: Because the loop terminates when EOF is encountered, the unreachable ELSE branch in the main loop never executes, leaving the final account un-updated in ACCOUNT-FILE.",
+ "1100-GET-ACCT-DATA & 1110-GET-XREF-DATA: Look up account master record and card cross-reference record by account ID, abending if either record is missing.",
+ "1200-GET-INTEREST-RATE & 1200-A-GET-DEFAULT-INT-RATE: Lookup disclosure group interest rate by account group, transaction type, and category; fallback to 'DEFAULT' group code if missing, abending if default is also missing.",
+ "1300-COMPUTE-INTEREST: If annual interest rate is non-zero, compute monthly interest as (balance * rate) / 1200 truncated toward zero to 2 decimals, accumulating into WS-TOTAL-INT.",
+ "1300-B-WRITE-TX: Format and write a 350-byte transaction record to SYSTRAN.ps with transaction type '01', category '05', description 'Int. for a/c ' + account ID, source 'System', current DB2 timestamp, and sequential ID prefixed with the parameter date.",
+ "9999-ABEND-PROGRAM: On fatal errors, output error diagnostics, display 'ABENDING PROGRAM', and terminate with return code 16, preserving already written records."
+]

@@ -1,0 +1,35 @@
+{
+ "program": "posttran",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "mode": "guided",
+ "verdict": "PASS",
+ "iterations": [
+  {
+   "iteration": 0,
+   "build": true,
+   "prompt_tokens": 14664,
+   "output_tokens": 4021,
+   "llm_seconds": 235.4,
+   "scenarios_passed": 0,
+   "scenarios_total": 2,
+   "records_matched": 622,
+   "records_total": 731,
+   "all_pass": false
+  },
+  {
+   "iteration": 1,
+   "build": true,
+   "prompt_tokens": 14209,
+   "output_tokens": 3524,
+   "llm_seconds": 130.2,
+   "scenarios_passed": 2,
+   "scenarios_total": 2,
+   "records_matched": 731,
+   "records_total": 731,
+   "all_pass": true
+  }
+ ],
+ "total_prompt_tokens": 28873,
+ "total_output_tokens": 7545
+}

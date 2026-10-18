@@ -1,0 +1,23 @@
+{
+ "program": "intcalc",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "mode": "guided",
+ "verdict": "PASS",
+ "iterations": [
+  {
+   "iteration": 0,
+   "build": true,
+   "prompt_tokens": 13401,
+   "output_tokens": 5088,
+   "llm_seconds": 314.9,
+   "scenarios_passed": 5,
+   "scenarios_total": 5,
+   "records_matched": 311,
+   "records_total": 311,
+   "all_pass": true
+  }
+ ],
+ "total_prompt_tokens": 13401,
+ "total_output_tokens": 5088
+}

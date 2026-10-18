@@ -1,0 +1,5 @@
+[PASS] posttran/sample
+[PASS] posttran/edge
+[FAIL] posttran/hidden-state
+   TCATBALF.flat: 54/55 records identical; 1 differ, 0 missing, 0 extra, record order matches (55 produced)
+     key 00000000001010007: FILLER expected '                      ' got 'F50kkkkkkkkkkkkkkkkkkk'

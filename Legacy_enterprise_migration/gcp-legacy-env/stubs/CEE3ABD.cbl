@@ -1,0 +1,11 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. CEE3ABD.
+      * Stand-in for IBM LE abend service: report and stop with RC 16.
+       DATA DIVISION.
+       LINKAGE SECTION.
+       01 ABCODE   PIC S9(9) BINARY.
+       01 TIMING   PIC S9(9) BINARY.
+       PROCEDURE DIVISION USING ABCODE TIMING.
+           DISPLAY 'CEE3ABD: ABEND CODE ' ABCODE UPON SYSERR
+           MOVE 16 TO RETURN-CODE
+           STOP RUN.

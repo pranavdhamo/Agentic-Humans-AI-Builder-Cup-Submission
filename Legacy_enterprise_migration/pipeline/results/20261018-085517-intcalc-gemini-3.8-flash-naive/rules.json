@@ -1,0 +1,11 @@
+[
+ "0000-TCATBALF-OPEN, 0100-XREFFILE-OPEN, 0200-DISCGRP-OPEN, 0300-ACCTFILE-OPEN, 0400-TRANFILE-OPEN: Open input and output files and abend with status code if any file cannot be opened.",
+ "1000-TCATBALF-GET-NEXT: Sequentially read 50-byte TCATBAL-FILE records until end-of-file condition.",
+ "PROCEDURE DIVISION / 1050-UPDATE-ACCOUNT: Control break on account ID triggers account update (adding accumulated interest to ACCT-CURR-BAL and clearing cycle credits and debits), but due to loop termination on EOF, the very last account processed is never updated (reproducing COBOL bug).",
+ "1100-GET-ACCT-DATA: Read ACCOUNT-FILE by TRANCAT-ACCT-ID key; if not found, display error and abend.",
+ "1110-GET-XREF-DATA: Read XREF-FILE by alternate key FD-XREF-ACCT-ID; if not found, display error and abend.",
+ "1200-GET-INTEREST-RATE / 1200-A-GET-DEFAULT-INT-RATE: Lookup disclosure group rate by group ID + transaction type + category code; if missing (status 23), retry with 'DEFAULT' group ID; if still missing, display error and abend.",
+ "1300-COMPUTE-INTEREST: When interest rate is non-zero, compute monthly interest as (TRAN-CAT-BAL * DIS-INT-RATE) / 1200 with decimal truncation toward zero, accumulate into WS-TOTAL-INT, and write interest transaction.",
+ "1300-B-WRITE-TX: Construct 350-byte transaction record with ID formatted as PARM-DATE + 6-digit counter, '01' type, '0005' cat, 'System' source, 'Int. for a/c <acctId>', signed interest amount, card number, and DB2 timestamp, and append to transaction file.",
+ "9910-DISPLAY-IO-STATUS / 9999-ABEND-PROGRAM: Format 2-character file status into 4-character NNNN status string, display abend messages, and exit with return code 16."
+]

@@ -1,0 +1,5 @@
+[PASS] intcalc/sample
+[PASS] intcalc/interest-edge
+[PASS] intcalc/interest-abend-account
+[PASS] intcalc/interest-abend-xref
+[PASS] intcalc/interest-abend-rate

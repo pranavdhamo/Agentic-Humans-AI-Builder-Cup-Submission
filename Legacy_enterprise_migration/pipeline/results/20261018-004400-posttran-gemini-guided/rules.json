@@ -1,0 +1,15 @@
+[
+ "0000-DALYTRAN-OPEN / 0100-TRANFILE-OPEN / etc.: Open input/output files and abend via 9999-ABEND-PROGRAM (return code 16) if file status is not '00'",
+ "1000-DALYTRAN-GET-NEXT: Sequentially read fixed 350-byte records from DALYTRAN until file status '10' (EOF)",
+ "PROCEDURE DIVISION: For each transaction read, increment WS-TRANSACTION-COUNT by 1 and reset fail reason to 0 and desc to spaces",
+ "1500-A-LOOKUP-XREF: Lookup card in XREF file; if invalid key, set reason 100 ('INVALID CARD NUMBER FOUND')",
+ "1500-B-LOOKUP-ACCT: Lookup account in ACCOUNT file using XREF-ACCT-ID; if invalid key, set reason 101 ('ACCOUNT RECORD NOT FOUND')",
+ "1500-B-LOOKUP-ACCT: Compute temp balance = ACCT-CURR-CYC-CREDIT - ACCT-CURR-CYC-DEBIT + DALYTRAN-AMT truncated to S9(9)V99; set reason 102 ('OVERLIMIT TRANSACTION') if ACCT-CREDIT-LIMIT < temp balance",
+ "1500-B-LOOKUP-ACCT: Sequential IF check for ACCT-EXPIRAION-DATE >= DALYTRAN-ORIG-TS (1:10); if expired, set reason 103 ('TRANSACTION RECEIVED AFTER ACCT EXPIRATION'), which overwrites reason 102 if also overlimit",
+ "2500-WRITE-REJECT-REC: If validation fails, increment WS-REJECT-COUNT by 1 and write 430-byte record (350-byte tran + 4-digit reason + 76-char reason desc) to DALYREJS in arrival order",
+ "2000-POST-TRANSACTION: If valid, populate TRAN-PROC-TS with current DB2 timestamp and post transaction to master files",
+ "2700-UPDATE-TCATBAL: Lookup TCATBAL by account id, type cd, cat cd; if invalid key, create record with tran amt and preserve filler leak; if found, add tran amt to balance",
+ "2800-UPDATE-ACCOUNT-REC: Add tran amt to ACCT-CURR-BAL; if tran amt >= 0 add to ACCT-CURR-CYC-CREDIT, else add to ACCT-CURR-CYC-DEBIT (signed algebraic addition)",
+ "2900-WRITE-TRANSACTION-FILE: Write posted transaction to indexed TRANSACT file, outputting sequentially in ascending TRAN-ID order",
+ "PROCEDURE DIVISION: Set RETURN-CODE to 4 if WS-REJECT-COUNT > 0, otherwise 0; write console count lines to stdout.txt and return code to rc.txt"
+]

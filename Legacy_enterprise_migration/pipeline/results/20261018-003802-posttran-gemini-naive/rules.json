@@ -1,0 +1,12 @@
+[
+ "1000-DALYTRAN-GET-NEXT: Read each transaction sequentially from DALYTRAN file and increment WS-TRANSACTION-COUNT for every record.",
+ "1500-A-LOOKUP-XREF: Lookup card number in XREF file; if not found, set reject reason 100 with description 'INVALID CARD NUMBER FOUND'.",
+ "1500-B-LOOKUP-ACCT: Lookup account by account ID from XREF record; if not found, set reject reason 101 with description 'ACCOUNT RECORD NOT FOUND'.",
+ "1500-B-LOOKUP-ACCT: Compute temporary balance (CYC-CREDIT - CYC-DEBIT + TRAN-AMT); if account credit limit is less than temporary balance, set reject reason 102 with description 'OVERLIMIT TRANSACTION'.",
+ "1500-B-LOOKUP-ACCT: If account expiration date is less than transaction origination date (first 10 characters), set reject reason 103 with description 'TRANSACTION RECEIVED AFTER ACCT EXPIRATION', overwriting any prior overlimit reject reason 102.",
+ "2000-POST-TRANSACTION: For valid transactions, populate transaction record with input fields, generate DB2 timestamp for TRAN-PROC-TS, update category balance and account balance, and write posted transaction.",
+ "2500-WRITE-REJECT-REC: For rejected transactions, increment WS-REJECT-COUNT and write 430-byte reject record containing the 350-byte input record plus 4-digit reason and 76-character reason description.",
+ "2700-UPDATE-TCATBAL: Lookup transaction category balance by account ID, type code, and category code; if not found create new record with amount, else add transaction amount to existing balance.",
+ "2800-UPDATE-ACCOUNT-REC: Add transaction amount to ACCT-CURR-BAL; if amount >= 0 add to ACCT-CURR-CYC-CREDIT, else add to ACCT-CURR-CYC-DEBIT.",
+ "PROCEDURE DIVISION: Display processed and rejected transaction counts; if reject count > 0, set return code to 4, otherwise return code remains 0."
+]

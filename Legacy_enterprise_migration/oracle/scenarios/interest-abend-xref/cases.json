@@ -1,0 +1,23 @@
+{
+ "10000000007": "truncation: per-category truncation, awkward balances (blank group -> DEFAULT rates)",
+ "10000000014": "rounding vs truncation: 300.00 and 700.00 at 2.50% give x.625 and x.4583 (HALF_UP would differ)",
+ "10000000021": "category whose DEFAULT rate is zero -> no transaction",
+ "10000000028": "negative balances: negative interest truncates toward zero; -0.01 gives zero",
+ "10000000035": "zero balances: zero-amount interest transactions are still written",
+ "10000000042": "ZEROGRP: zero rates -> no transactions, yet cycle credit/debit still reset",
+ "10000000049": "HIGHRATE: monthly interest overflows 9 digits",
+ "10000000056": "HIGHRATE: running total overflows 9 digits across categories",
+ "10000000063": "NEGRATE: negative annual rate -> negative interest",
+ "10000000070": "PARTIAL: one category uses the group rate, the others fall back to DEFAULT",
+ "10000000077": "current balance near the 10-digit limit: adding interest overflows ACCT-CURR-BAL  [ABEND: no card cross-reference]",
+ "10000000084": "non-zero cycle credit/debit are reset; balance gets the sum of interest",
+ "10000000091": "mixed account 0",
+ "10000000098": "mixed account 1",
+ "10000000105": "mixed account 2",
+ "10000000112": "mixed account 3",
+ "10000000119": "mixed account 4",
+ "10000000126": "mixed account 5",
+ "10000000133": "mixed account 6",
+ "10000000140": "mixed account 7",
+ "10000000147": "LAST account in the file: interest transactions written but balance never updated (legacy bug)"
+}

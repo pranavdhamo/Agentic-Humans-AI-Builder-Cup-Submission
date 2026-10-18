@@ -1,0 +1,23 @@
+{
+ "program": "posttran",
+ "provider": "gemini",
+ "model": "gemini-3.8-flash",
+ "mode": "naive",
+ "verdict": "FAIL",
+ "iterations": [
+  {
+   "iteration": 0,
+   "build": true,
+   "prompt_tokens": 14236,
+   "output_tokens": 3704,
+   "llm_seconds": 262.5,
+   "scenarios_passed": 0,
+   "scenarios_total": 2,
+   "records_matched": 622,
+   "records_total": 731,
+   "all_pass": false
+  }
+ ],
+ "total_prompt_tokens": 14236,
+ "total_output_tokens": 3704
+}

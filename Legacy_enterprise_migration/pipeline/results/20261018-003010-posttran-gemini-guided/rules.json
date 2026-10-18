@@ -1,0 +1,13 @@
+[
+ "1000-DALYTRAN-GET-NEXT: Read 350-byte transactions sequentially until EOF.",
+ "1500-A-LOOKUP-XREF: Lookup card number in card xref file; if invalid key, set WS-VALIDATION-FAIL-REASON = 100 'INVALID CARD NUMBER FOUND'.",
+ "1500-B-LOOKUP-ACCT: Lookup account with XREF-ACCT-ID in account master; if invalid key, set WS-VALIDATION-FAIL-REASON = 101 'ACCOUNT RECORD NOT FOUND'.",
+ "1500-B-LOOKUP-ACCT: Compute WS-TEMP-BAL = ACCT-CURR-CYC-CREDIT - ACCT-CURR-CYC-DEBIT + DALYTRAN-AMT; if ACCT-CREDIT-LIMIT < WS-TEMP-BAL, set WS-VALIDATION-FAIL-REASON = 102 'OVERLIMIT TRANSACTION'.",
+ "1500-B-LOOKUP-ACCT: If ACCT-EXPIRAION-DATE < DALYTRAN-ORIG-TS (1:10), sequential IF overwrites WS-VALIDATION-FAIL-REASON with 103 'TRANSACTION RECEIVED AFTER ACCT EXPIRATION'.",
+ "2000-POST-TRANSACTION: Copy transaction fields, stamp TRAN-PROC-TS with current DB2 format timestamp, and post to balance, account, and transaction outputs.",
+ "2700-UPDATE-TCATBAL: Read TCATBAL by key (ACCT-ID, TYPE-CD, CAT-CD); if not found, create new record with initialized balance + DALYTRAN-AMT (2700-A); otherwise add DALYTRAN-AMT to existing balance (2700-B).",
+ "2800-UPDATE-ACCOUNT-REC: Add DALYTRAN-AMT to ACCT-CURR-BAL; if DALYTRAN-AMT >= 0 add to ACCT-CURR-CYC-CREDIT, else add to ACCT-CURR-CYC-DEBIT.",
+ "2900-WRITE-TRANSACTION-FILE: Write 350-byte posted transaction record to TRANSACT-FILE (ordered by TRAN-ID).",
+ "2500-WRITE-REJECT-REC: On validation failure, write 430-byte record (350-byte tran + 4-digit reason + 76-char description) to DALYREJS in arrival order.",
+ "PROCEDURE DIVISION: If WS-REJECT-COUNT > 0 set RETURN-CODE = 4; otherwise RETURN-CODE = 0; on abend set RETURN-CODE = 16."
+]

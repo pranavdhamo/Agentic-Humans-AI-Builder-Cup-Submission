@@ -1,0 +1,16 @@
+[FAIL] posttran/sample
+   TCATBALF.flat: 50/100 records identical; 50 differ, 0 missing, 0 extra, record order matches (100 produced)
+     key 00000000001030001: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000002030001: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000003030001: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000004030001: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000005030001: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000006030001: FILLER expected '0000000000000000000000' got '                      '
+[FAIL] posttran/edge
+   TCATBALF.flat: 50/109 records identical; 59 differ, 0 missing, 0 extra, record order matches (109 produced)
+     key 00000000013010009: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000013029999: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000013050007: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000013070001: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000015010002: FILLER expected '0000000000000000000000' got '                      '
+     key 00000000015020003: FILLER expected '0000000000000000000000' got '                      '

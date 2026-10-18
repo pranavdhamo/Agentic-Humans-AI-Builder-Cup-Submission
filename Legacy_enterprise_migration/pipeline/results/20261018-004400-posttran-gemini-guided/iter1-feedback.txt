@@ -1,0 +1,3 @@
+[PASS] posttran/sample
+[PASS] posttran/edge
+[PASS] posttran/hidden-state

@@ -1,0 +1,12 @@
+{
+ "8000000000000001": "CREATE before any category record was read -> filler is the initial spaces",
+ "8000000000000002": "update existing record: buffer now holds this record's filler (F01...)",
+ "8000000000000003": "CREATE after a read -> inherits the filler of the last record read (F01...)",
+ "8000000000000004": "update existing record of another account (F02...)",
+ "8000000000000005": "CREATE -> inherits F02...",
+ "8000000000000006": "rejected (unknown card): must not touch the category buffer",
+ "8000000000000007": "CREATE after a rejected transaction -> still inherits F02...",
+ "8000000000000008": "update existing record (F03...)",
+ "8000000000000009": "update the same record again",
+ "8000000000000010": "CREATE -> inherits F03..."
+}
